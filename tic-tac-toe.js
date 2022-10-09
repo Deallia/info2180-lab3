@@ -1,4 +1,5 @@
 "use strict"
 
-document.getElementById("myFrame").addEventListener("load", myFunction);
- function myFunction (){document.querySelector("div").className = "square";}
+var box =document.getElementById("board");
+box.addEventListener("load", myFunction);
+ function myFunction (){box.children.className("square");}
