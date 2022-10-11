@@ -28,22 +28,46 @@ const wins=[
 ]
 
 const grid = () => Array.from(document.getElementsByClassName("square"));
+
 const enableListeners =() => grid().forEach(cell => cell.addEventListener("click", function(event){
-currentPlayer = player ? playerO : playerX;
+	currentPlayer = player ? playerO : playerX;
 
-event.target.innerHTML=currentPlayer;
-event.target.classList.add(currentPlayer);
+	event.target.innerHTML=currentPlayer;
+	event.target.classList.add(currentPlayer);
 
+	nextPlayer();
+	checkWin();
 
-nextPlayer();
-checkWin();
 }, {once:true}));
+
 
 function nextPlayer(){
 player=!player;
 }
 
 
+function enableHover(){
+	grid().forEach(cell =>cell.addEventListener("mouseover", function(e){e.target.classList.add("hover")}))
+}
+
+
+function disableHover(){
+	grid().forEach(cell =>cell.addEventListener("mouseout", function(e)					{e.target.classList.remove("hover")}))
+}
+
+
+function checkWin(){
+	for (var i; i < wins.length; i++){
+		const [a,b,c] = wins[i];
+		if ( grid()[a].state!= "" && grid()[a].state==grid()[b].state
+			&&grid()[a].state==grid()[c].state)
+			console.log("TRUE")
+	}
+}
+
+
 enableListeners();
+enableHover();
+disableHover();
 };
 
