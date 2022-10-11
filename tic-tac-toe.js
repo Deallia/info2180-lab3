@@ -24,7 +24,9 @@ const wins=[
 
 const grid = () => Array.from(document.getElementsByClassName("square"));
 
-const enableListeners =() => grid().forEach(cell => cell.addEventListener("click", function(event){
+const enableListeners =() => grid().forEach(cell => cell.addEventListener("click", handleClick, {once:true}));
+
+function handleClick(event){
 	var currentPlayer = player ? playerO : playerX;
 
 	event.target.innerHTML=currentPlayer;
@@ -34,9 +36,8 @@ const enableListeners =() => grid().forEach(cell => cell.addEventListener("click
 		
 		nextPlayer();
 		winner(currentPlayer);
-	
 
-}, {once:true}));
+}
 
 
 function nextPlayer(){
@@ -64,6 +65,7 @@ function winner(player){
 				document.getElementById("status").innerHTML="Congratulations! O is the Winner!";
 				document.getElementById("status").classList.add("you-won");
 			}
+	grid().forEach(cell => cell.removeEventListener("click", handleClick, {once:true}));
 	}
 }
 
@@ -87,9 +89,25 @@ function checkWin(){
 	return victory;
 }
 
+var button = document.querySelector(".btn");
+const newGame = ()=> button.addEventListener("click", Restart);
+
+
+function Restart(){
+
+	grid().forEach(cell => cell.innerHTML="");
+	grid().forEach(cell=>cell.classList.remove(playerX));
+	grid().forEach(cell=>cell.classList.remove(playerO));
+	document.getElementById("status").classList.remove("you-won");
+	document.querySelector("#status").innerHTML="Move your mouse over a square and click to play an X or an O.";
+	player=false;
+	enableListeners();
+}
+
+
 	enableListeners();
 	enableHover();
 	disableHover();
-	
+	newGame();
 };
 
