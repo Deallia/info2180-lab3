@@ -1,17 +1,12 @@
 
-
-
-let classX = document.createElement("p");
-classX.innerHTML='X';
-console.log(classX);
-
 window.onload = (event) => {
 
 var Board = Array.from(document.getElementById("board").children);
-console.log(Board);
+
 for (let i of Board){
 	i.classList.add("square");
 }
+
 var player;
 const playerX ="X";
 const playerO ="O";
@@ -30,13 +25,16 @@ const wins=[
 const grid = () => Array.from(document.getElementsByClassName("square"));
 
 const enableListeners =() => grid().forEach(cell => cell.addEventListener("click", function(event){
-	currentPlayer = player ? playerO : playerX;
+	var currentPlayer = player ? playerO : playerX;
 
 	event.target.innerHTML=currentPlayer;
 	event.target.classList.add(currentPlayer);
-
-	nextPlayer();
-	checkWin();
+       
+      
+		
+		nextPlayer();
+		winner(currentPlayer);
+	
 
 }, {once:true}));
 
@@ -56,18 +54,42 @@ function disableHover(){
 }
 
 
-function checkWin(){
-	for (var i; i < wins.length; i++){
-		const [a,b,c] = wins[i];
-		if ( grid()[a].state!= "" && grid()[a].state==grid()[b].state
-			&&grid()[a].state==grid()[c].state)
-			console.log("TRUE")
+function winner(player){
+   if (checkWin()){
+	if (player==playerX){
+			document.getElementById("status").innerHTML="Congratulations! X is the Winner!";
+			document.getElementById("status").classList.add("you-won");}
+			
+			else {
+				document.getElementById("status").innerHTML="Congratulations! O is the Winner!";
+				document.getElementById("status").classList.add("you-won");
+			}
 	}
 }
 
 
-enableListeners();
-enableHover();
-disableHover();
+function checkWin(){
+	var victory= false;
+	for (var i=0; i < wins.length; i++){
+		const a = wins[i][0];
+		const b = wins[i][1];
+		const c = wins[i][2];	 
+		const Squares = grid();
+																if ( Squares[a].innerHTML !== "" && Squares[a].innerHTML === Squares[b].innerHTML
+			&& Squares[a].innerHTML === Squares[c].innerHTML) {
+
+			victory=true;
+			break;
+		}
+		
+			
+	}
+	return victory;
+}
+
+	enableListeners();
+	enableHover();
+	disableHover();
+	
 };
 
